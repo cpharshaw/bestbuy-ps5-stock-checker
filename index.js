@@ -25,10 +25,17 @@ const transporter = nodemailer.createTransport(smtpTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
   auth: {
-    user: 'resteasydev@gmail.com',
-    pass: '1samsam1@A'
+    user: keys.heroku.user,
+    pass: keys.heroku.pass
   }
 }));
+
+const mailOptionsTest = {
+  from: 'resteasydev@gmail.com',
+  to: 'resteasydev@gmail.com',
+  subject: 'test, deployed to Heroku',
+  html: "test of html body, deployed to Heroku"
+};
 
 const mailOptions = {
   from: 'resteasydev@gmail.com',
@@ -37,7 +44,13 @@ const mailOptions = {
   html: "#ps5_stock <a href='https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149'>https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
 };
 
-
+transporter.sendMail(mailOptionsTest, function (error, info) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("test log of email in heroku.  testing successful");
+  }
+});
 
 
 
