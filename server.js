@@ -9,17 +9,18 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 
 
-http.createServer(function (request, response) {
+const argsArr = process.argv.slice(2);
 
+const command = argsArr[0].trim();
+let param = argsArr.slice(1).join(" ").trim();
+param = param.length > 0 ? param : undefined;
+
+http.createServer(function (request, response) {
+  console.log("server created")
   // const moment = require("moment");
   // const fs = require("fs");
 
-  const argsArr = process.argv.slice(2);
-
-  const command = argsArr[0].trim();
-  let param = argsArr.slice(1).join(" ").trim();
-  param = param.length > 0 ? param : undefined;
-
+  console.log("Request received ---> ", request)
 
   let foundIndicator = false;
 
@@ -91,7 +92,7 @@ http.createServer(function (request, response) {
     const date = new Date();
     const hour = date.getHours();
     const minute = date.getMinutes();
-
+    console.log("hourminute ---> ", hour && ":" && minute)
     if (hour >= 7 && hour < 25) {
       counter++;
       if (!foundIndicator) console.log("no PS5 stock found at BestBuy", counter);
