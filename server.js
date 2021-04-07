@@ -51,7 +51,7 @@ http.createServer(function (request, response) {
 
   transporter.sendMail(mailOptionsTest, function (error, info) {
     if (error) {
-      console.log(error);
+      console.log("some kind of error");
     } else {
       console.log("test log of email in heroku.  testing successful");
     }
@@ -92,7 +92,8 @@ http.createServer(function (request, response) {
     const date = new Date();
     const hour = date.getHours();
     const minute = date.getMinutes();
-    console.log("hourminute ---> ", hour && ":" && minute)
+    const time = hour && "- : - " && minute
+    console.log("time ---> ", time)
     if (hour >= 7 && hour < 25) {
       counter++;
       if (!foundIndicator) console.log("no PS5 stock found at BestBuy", counter);
