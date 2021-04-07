@@ -2,6 +2,7 @@
 
 exports.heroku = {
   user: process.env.USER,
-  pass: process.env.PASS
+  pass: process.env.PASS,
+  port: process.env.PORT
 };
 
