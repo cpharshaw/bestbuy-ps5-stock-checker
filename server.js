@@ -1,68 +1,68 @@
 
 require("dotenv").config();
-const keys = require("./keys.js");
-const http = require('http');
-
+const express = require("express");
 const axios = require("axios");
-
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
+const keys = require("./keys.js");
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// router.use(express.urlencoded({ extended: true }));
+// router.use(express.json());
 
 const argsArr = process.argv.slice(2);
-
 console.log("argsArr(s) ---> ", argsArr);
-
-// http.createServer(function (request, response) {
-// console.log("server created")
-// const moment = require("moment");
-// const fs = require("fs");
-
-// console.log("Request received ---> ", request)
 
 let counter = 0;
 
-const transporter = nodemailer.createTransport(smtpTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  auth: {
-    user: keys.heroku.user,
-    pass: keys.heroku.pass
-  }
-}));
-
-// const mailOptions = {
-//   from: 'cpharshaw@gmail.com',
-//   to: 'cpharshaw@gmail.com',
-//   subject: 'PS5 stock checker - potential inventory found at BestBuy',
-//   html: "PS5 stock checker - potential inventory found at BestBuy"
-// };
-
-const mailOptions = {
-  from: 'resteasydev@gmail.com',
-  to: 'trigger@applet.ifttt.com',
-  subject: 'PS5 in stock at BestBuy - email using Nodemailer: (#ps5_stock)',
-  html: "#ps5_stock <a href='https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149'>https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
-};
-
-// transporter.sendMail(mailOptionsTest, function (error, info) {
-//   if (error) {
-//     console.log("some kind of error");
-//   } else {
-//     console.log("test log of email in heroku.  testing successful");
-//   }
-// });
+app.get("/ps5/bestbuy", function (req, res) {
 
 
+  const transporter = nodemailer.createTransport(smtpTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    auth: {
+      user: keys.heroku.user,
+      pass: keys.heroku.pass
+    }
+  }));
 
-const bbPS5Call = param => {
+  // const mailOptions = {
+  //   from: 'cpharshaw@gmail.com',
+  //   to: 'cpharshaw@gmail.com',
+  //   subject: 'PS5 stock checker - potential inventory found at BestBuy',
+  //   html: "PS5 stock checker - potential inventory found at BestBuy"
+  // };
 
-  const date = new Date();
-  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-  const minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-  const second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-  const time = hour + ":" + minute + ":" + second;
+  const mailOptions = {
+    from: 'resteasydev@gmail.com',
+    to: 'trigger@applet.ifttt.com',
+    subject: 'PS5 in stock at BestBuy - email using Nodemailer: (#ps5_stock)',
+    html: "#ps5_stock <a href='https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149'>https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
+  };
 
-  if (hour >= 7 && hour < 25) {
+  // transporter.sendMail(mailOptionsTest, function (error, info) {
+  //   if (error) {
+  //     console.log("some kind of error");
+  //   } else {
+  //     console.log("test log of email in heroku.  testing successful");
+  //   }
+  // });
+
+
+
+  const bbPS5Call = param => {
+
+    const date = new Date();
+    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    const minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    const second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+    const time = hour + ":" + minute + ":" + second;
+
+    // if (hour >= 7 && hour < 25) {
+
     counter++;
 
     axios.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
@@ -83,18 +83,29 @@ const bbPS5Call = param => {
       .catch(err => {
         console.log(err);
       })
+    // };
+
   };
-};
+
+  if (counter == 0) {
+    bbPS5Call();
+    const intervalCheck = setInterval(() => {
+      bbPS5Call();
+    }, 5000);
+    res.send("looking for PS5's at BestBuy...");
+  };
 
 
-bbPS5Call(argsArr[0]);
 
-const intervalCheck = setInterval(() => {
-  bbPS5Call(argsArr[0]);
-}, 20000);
 
-// })
-// .listen(process.env.PORT || 5000);
+
+});
+
+
+
+app.listen(PORT, function () {
+  console.log(`🌎 ==> API server now on port ${PORT}!`);
+});
 
 
 // https://stackoverflow.com/questions/41889672/deploy-nodejs-app-without-http-server-on-heroku
