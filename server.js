@@ -51,6 +51,11 @@ app.get("/ps5/bestbuy", function (req, res) {
   //   }
   // });
 
+  const date1 = new Date();
+  const hour1 = date1.getHours() < 10 ? "0" + date1.getHours() : date1.getHours();
+  const minute1 = date1.getMinutes() < 10 ? "0" + date1.getMinutes() : date1.getMinutes();
+  const second1 = date1.getSeconds() < 10 ? "0" + date1.getSeconds() : date1.getSeconds();
+  const time1 = hour1 + ":" + minute1 + ":" + second1;
 
 
   const bbPS5Call = param => {
@@ -86,7 +91,7 @@ app.get("/ps5/bestbuy", function (req, res) {
     // };
 
   };
-  console.log("started app, ", counter);
+  console.log("started app, counter: ", counter, "; date and time: ", date1, time1);
   if (counter == 0) {
     bbPS5Call();
     const intervalCheck = setInterval(() => {
