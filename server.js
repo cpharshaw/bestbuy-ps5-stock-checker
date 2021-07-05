@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 5000;
 // router.use(express.urlencoded({ extended: true }));
 // router.use(express.json());
 
-const argsArr = process.argv.slice(2);
-console.log("argsArr(s) ---> ", argsArr);
+// const argsArr = process.argv.slice(2);
+// console.log("argsArr(s) ---> ", argsArr);
 
 let counter = 0;
 
@@ -86,7 +86,6 @@ app.get("/ps5/bestbuy", function (req, res) {
     // };
 
   };
-
   if (counter == 0) {
     bbPS5Call();
     const intervalCheck = setInterval(() => {
@@ -104,7 +103,7 @@ app.get("/ps5/bestbuy", function (req, res) {
 
 
 app.listen(PORT, function () {
-  console.log(`🌎 ==> API server now on port ${PORT}!`);
+  console.log(`🌎 ==> API server now on port ${PORT}! counter=${counter}`);
 });
 
 
