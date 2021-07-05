@@ -86,16 +86,16 @@ app.get("/ps5/bestbuy", function (req, res) {
     // };
 
   };
+  console.log("started app, ", counter);
   if (counter == 0) {
     bbPS5Call();
     const intervalCheck = setInterval(() => {
       bbPS5Call();
-    }, 5000);
+    }, 20000);
     res.send("looking for PS5's at BestBuy...");
-  };
-
-
-
+  } else {
+    console.log("counter else, ", counter);
+  }
 
 
 });
