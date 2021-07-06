@@ -91,7 +91,9 @@ app.get("/ps5/bestbuy", function (req, res) {
     // };
 
   };
+  
   console.log("started app, counter: ", counter, "; date and time: ", date1, time1);
+
   if (counter == 0) {
     bbPS5Call();
     const intervalCheck = setInterval(() => {
