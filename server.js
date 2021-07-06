@@ -74,6 +74,8 @@ app.get("/ps5/bestbuy", function (req, res) {
 
     axios.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
       .then(res => {
+        console.log("axios get...");
+        
         let data = res.data;
 
         const searchAvailability = data.search('id="shop-buying-options');
