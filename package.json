@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "npm install" 
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +17,8 @@
     "moment": "^2.29.1",
     "nodemailer": "^6.5.0",
     "nodemailer-smtp-transport": "^2.7.4"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
